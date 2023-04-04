@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "nanosemantika-test"
+version = "0.1.0"
+description = ""
+authors = ["Никита Дерюгин <dafun@icloud.com>"]
+readme = "README.md"
+packages = [{include = "nanosemantika_test"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.95.0"
+sqlalchemy = "^2.0.8"
+pydantic = "^1.10.7"
+alembic = "^1.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
