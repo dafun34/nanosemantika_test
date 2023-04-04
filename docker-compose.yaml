@@ -1,0 +1,22 @@
+version: '3'
+services:
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "9191:9191"
+    env_file:
+      - .env
+    depends_on:
+      - db
