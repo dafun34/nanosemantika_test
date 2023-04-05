@@ -76,3 +76,10 @@ class RecipeCreateSchema(BaseModel):
     ingredients: list[ComponentCreateSchema] = Form(...)
     description: str
     cooking_time: int
+
+
+class RecipeUpdateSchema(BaseModel):
+    name: Optional[str]
+    ingredients: Optional[list[ComponentCreateSchema]] = Form()
+    description: Optional[str]
+    cooking_time: Optional[int]

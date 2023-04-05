@@ -1,8 +1,8 @@
-"""initial
+"""empty message
 
-Revision ID: 7d45a9624155
+Revision ID: 639dba18421c
 Revises: 
-Create Date: 2023-04-05 06:32:39.744675
+Create Date: 2023-04-05 14:47:58.712308
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7d45a9624155'
+revision = '639dba18421c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,15 +38,17 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('ingredient_id', sa.Integer(), nullable=True),
     sa.Column('amount', sa.SmallInteger(), nullable=True),
-    sa.ForeignKeyConstraint(['ingredient_id'], ['ingredients.id'], ),
+    sa.Column('recipe_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['ingredient_id'], ['ingredients.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['recipe_id'], ['recipes.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_components_id'), 'components', ['id'], unique=False)
     op.create_table('recipe_component',
     sa.Column('recipe_id', sa.Integer(), nullable=True),
     sa.Column('component_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['component_id'], ['components.id'], ),
-    sa.ForeignKeyConstraint(['recipe_id'], ['recipes.id'], )
+    sa.ForeignKeyConstraint(['component_id'], ['components.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['recipe_id'], ['recipes.id'], ondelete='CASCADE')
     )
     # ### end Alembic commands ###
 

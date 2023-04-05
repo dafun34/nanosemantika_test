@@ -7,5 +7,8 @@ check:
 	poetry run flake8 .
 	poetry run black . --check
 
+makemigrations:
+	docker-compose exec app alembic revision --autogenerate
+
 migrate:
 	docker-compose exec app alembic -c alembic.ini upgrade head

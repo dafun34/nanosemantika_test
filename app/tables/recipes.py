@@ -11,11 +11,18 @@ class Component(Base):
     id = sa.Column(
         "id", sa.Integer, primary_key=True, index=True, autoincrement=True
     )
-    ingredient_id = sa.Column(sa.Integer, sa.ForeignKey("ingredients.id"))
+    ingredient_id = sa.Column(
+        sa.Integer, sa.ForeignKey("ingredients.id", ondelete="CASCADE")
+    )
     ingredient = relationship(
         "Ingredient", backref=("component"), lazy="joined"
     )
     amount = sa.Column("amount", sa.SmallInteger())
+    recipe_id = sa.Column(
+        "recipe_id",
+        sa.Integer,
+        sa.ForeignKey("recipes.id", ondelete="CASCADE"),
+    )
 
     def __repr__(self) -> str:
         """Стринговое отображение объекта."""
@@ -48,8 +55,16 @@ class Ingredient(Base):
 recipe_component = sa.Table(
     "recipe_component",
     Base.metadata,
-    sa.Column("recipe_id", sa.Integer, sa.ForeignKey("recipes.id")),
-    sa.Column("component_id", sa.Integer, sa.ForeignKey("components.id")),
+    sa.Column(
+        "recipe_id",
+        sa.Integer,
+        sa.ForeignKey("recipes.id", ondelete="CASCADE"),
+    ),
+    sa.Column(
+        "component_id",
+        sa.Integer,
+        sa.ForeignKey("components.id", ondelete="CASCADE"),
+    ),
 )
 
 

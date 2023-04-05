@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 from sqlalchemy.orm import selectinload
 
 from app.repositories.base import Repository
@@ -36,3 +36,16 @@ async def create_recipe(recipe_data):
             ingredient.ingredient_id, ingredient.amount, recipe_id
         )
     return recipe_id
+
+
+async def update_recipe(recipe_id, update_data):
+    if not update_data.dict(exclude_unset=True, exclude={"ingredients"}):
+        return
+    update_query = (
+        update(Recipes)
+        .where(Recipes.id == recipe_id)
+        .values(
+            **update_data.dict(exclude_unset=True, exclude={"ingredients"})
+        )
+    )
+    await Repository.update(update_query)
