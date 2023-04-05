@@ -1,17 +1,18 @@
 from typing import List
 
-from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from starlette import status
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, Response
 
-from app.repositories.components import delete_components_by_recipe, \
-    insert_component
-from app.repositories.ingredients import get_ingredients_list
+from app.repositories.components import (
+    delete_components_by_recipe,
+    insert_component,
+)
 from app.repositories.recipes import (
     create_recipe,
+    delete_recipe,
     get_recipe,
     get_recipes_list,
     update_recipe,
@@ -74,3 +75,9 @@ class Recipes(BaseView):
                 "post": jsonable_encoder(recipe),
             },
         )
+
+    @router.delete(f"/recipes/{{recipe_id}}")
+    async def delete_recipe(self, recipe_id: int):
+        """Удалить рецепт."""
+        await delete_recipe(recipe_id)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)

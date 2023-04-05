@@ -21,7 +21,5 @@ async def insert_component(ingredient_id, amount, recipe_id):
 
 
 async def delete_components_by_recipe(recipe_id):
-    query = delete(Component).where(
-        Component.recipe_id == recipe_id
-    )
+    query = delete(Component).where(Component.recipe_id == recipe_id)
     await Repository.delete(query)

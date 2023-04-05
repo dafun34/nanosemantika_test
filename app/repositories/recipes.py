@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select, update
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.orm import selectinload
 
 from app.repositories.base import Repository
@@ -49,3 +49,8 @@ async def update_recipe(recipe_id, update_data):
         )
     )
     await Repository.update(update_query)
+
+
+async def delete_recipe(recipe_id):
+    query = delete(Recipes).where(Recipes.id == recipe_id)
+    await Repository.delete(query)
