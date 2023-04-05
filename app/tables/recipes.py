@@ -12,7 +12,7 @@ class Component(Base):
         "id", sa.Integer, primary_key=True, index=True, autoincrement=True
     )
     ingredient_id = sa.Column(sa.Integer, sa.ForeignKey("ingredients.id"))
-    ingredient = relationship("Ingredient", backref=("component"))
+    ingredient = relationship("Ingredient", backref=("component"), lazy="joined")
     amount = sa.Column("amount", sa.SmallInteger())
 
     def __repr__(self) -> str:
@@ -61,7 +61,7 @@ class Recipes(Base):
     name = sa.Column("name", sa.String(200), nullable=False)
     description = sa.Column('description', sa.TEXT())
     ingredients = relationship(
-        "Component", secondary=recipe_component, backref="recipes"
+        "Component", secondary=recipe_component
     )
     cooking_time = sa.Column(sa.SmallInteger())
 

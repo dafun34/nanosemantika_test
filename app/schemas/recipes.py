@@ -56,6 +56,7 @@ class RecipeSchema(BaseModel):
     name: str
     ingredients: list[ComponentSchema]
     description: str
+    cooking_time: int
 
     class Config:
         """Конфиг модели."""
