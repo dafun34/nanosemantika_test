@@ -11,3 +11,5 @@ WORKDIR /app
 COPY poetry.lock .
 COPY pyproject.toml .
 RUN poetry install --no-root
+
+CMD ["/bin/bash", "start.sh"]

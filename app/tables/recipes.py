@@ -13,7 +13,7 @@ class Component(Base):
     )
     ingredient_id = sa.Column(sa.Integer, sa.ForeignKey("ingredients.id"))
     ingredient = relationship("Ingredient", backref=("component"))
-    amount = sa.Column("amount", sa.SmallInteger)
+    amount = sa.Column("amount", sa.SmallInteger())
 
     def __repr__(self) -> str:
         """Стринговое отображение объекта."""
@@ -59,11 +59,11 @@ class Recipes(Base):
         "id", sa.Integer, primary_key=True, index=True, autoincrement=True
     )
     name = sa.Column("name", sa.String(200), nullable=False)
-
+    description = sa.Column('description', sa.TEXT())
     ingredients = relationship(
         "Component", secondary=recipe_component, backref="recipes"
     )
-
+    cooking_time = sa.Column(sa.SmallInteger())
 
     def __repr__(self) -> str:
         """Стринговое отображение объекта."""
