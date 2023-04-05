@@ -4,9 +4,9 @@ from typing import Any, NewType, Union
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import Delete, Insert, Select, Update
-from app.tables.base import Base
-from app.db import async_session
 
+from app.db import async_session
+from app.tables.base import Base
 
 Query = NewType("Query", Union[Delete, Select, Update, Insert])
 

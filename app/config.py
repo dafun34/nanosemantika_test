@@ -26,7 +26,7 @@ class Settings(BaseSettings):
 
     @validator("DATABASE_URL", pre=True, allow_reuse=True)
     def assemble_db_connection(
-            cls, v: Optional[str], values: dict[str, Any]
+        cls, v: Optional[str], values: dict[str, Any]
     ) -> str:
         """Собираем коннект для подключения к БД."""
         if isinstance(v, str):

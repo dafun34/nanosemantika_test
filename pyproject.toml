@@ -17,6 +17,43 @@ uvicorn = "^0.21.1"
 fastapi-utils = "^0.2.1"
 asyncpg = "^0.27.0"
 
+
+[tool.poetry.group.dev.dependencies]
+flake8-docstrings = "^1.6.0"
+black = "^22.12.0"
+isort = "^5.11.4"
+flake8 = "^6.0.0"
+flake8-annotations = "^2.9.1"
+flake8-pyproject = "^1.2.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 79
+include = '\.py$'
+exclude = '''
+(
+    /(
+        \.git
+      | \.mypy_cache
+      | env
+      | ptvs_virtualenv_proxy.py
+      | migrations
+      | venv
+    )/
+)
+
+'''
+
+[tool.isort]
+line_length = 79
+skip = ["migrations/"]
+profile="black"
+
+
+[tool.flake8]
+exclude = "manage.py, migrations/"
+ignore = ["W503", "C812", "SIM106", "CCR001", "R503", "E501", "N805", "ANN101", "ANN102", "SIM119", "Q441", "ANN401", "Q443", "F405"]

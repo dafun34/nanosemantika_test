@@ -1,5 +1,6 @@
 import uvicorn
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
+
 from app.config import settings
 from app.views import recipes
 
