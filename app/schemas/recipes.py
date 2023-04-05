@@ -5,8 +5,6 @@ from fastapi import Form
 from pydantic import BaseModel
 
 from app.tables.recipes import Component
-from app.utils.common import as_form
-
 
 class IngredientSchema(BaseModel):
     """Модель отображения ингридиентов."""

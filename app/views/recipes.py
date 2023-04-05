@@ -76,7 +76,8 @@ class Recipes(BaseView):
             },
         )
 
-    @router.delete(f"/recipes/{{recipe_id}}")
+    @router.delete(f"/recipes/{{recipe_id}}",
+                   responses={204: {"description": "Рецепт удален"}})
     async def delete_recipe(self, recipe_id: int):
         """Удалить рецепт."""
         await delete_recipe(recipe_id)
