@@ -1,17 +1,21 @@
+"""Репозиторий для работы с рецептами."""
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.orm import selectinload
 
 from app.repositories.base import Repository
 from app.repositories.components import insert_component
+from app.schemas.recipes import RecipeCreateSchema, RecipeUpdateSchema
 from app.tables.recipes import Recipes
 
 
-async def get_recipes_list():
+async def get_recipes_list() -> list:
+    """Получить список рецептов."""
     query = select(Recipes).options(selectinload(Recipes.ingredients))
     return await Repository.all(query)
 
 
-async def get_recipe(recipe_id: int):
+async def get_recipe(recipe_id: int) -> tuple:
+    """Получить рецепт по id."""
     query = (
         select(Recipes)
         .where(Recipes.id == recipe_id)
@@ -20,7 +24,8 @@ async def get_recipe(recipe_id: int):
     return await Repository.scalar(query)
 
 
-async def create_recipe(recipe_data):
+async def create_recipe(recipe_data: RecipeCreateSchema) -> int:
+    """Создать рецепт и вернуть его id."""
     recipe_create_query = (
         insert(Recipes)
         .values(
@@ -38,7 +43,10 @@ async def create_recipe(recipe_data):
     return recipe_id
 
 
-async def update_recipe(recipe_id, update_data):
+async def update_recipe(
+    recipe_id: int, update_data: RecipeUpdateSchema
+) -> None:
+    """Обновить рецепт."""
     if not update_data.dict(exclude_unset=True, exclude={"ingredients"}):
         return
     update_query = (
@@ -51,6 +59,7 @@ async def update_recipe(recipe_id, update_data):
     await Repository.update(update_query)
 
 
-async def delete_recipe(recipe_id):
+async def delete_recipe(recipe_id: int) -> None:
+    """Удалить рецепт."""
     query = delete(Recipes).where(Recipes.id == recipe_id)
     await Repository.delete(query)

@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from app.tables.recipes import Component
 
+
 class IngredientSchema(BaseModel):
     """Модель отображения ингридиентов."""
 
@@ -65,11 +66,15 @@ class RecipeSchema(BaseModel):
 
 
 class ComponentCreateSchema(BaseModel):
+    """Модель для создания компонента."""
+
     ingredient_id: int
     amount: int
 
 
 class RecipeCreateSchema(BaseModel):
+    """Пидантик модель для создания рецепта."""
+
     name: str
     ingredients: list[ComponentCreateSchema] = Form(...)
     description: str
@@ -77,6 +82,8 @@ class RecipeCreateSchema(BaseModel):
 
 
 class RecipeUpdateSchema(BaseModel):
+    """Пидантик модель для обновления рецепта."""
+
     name: Optional[str]
     ingredients: Optional[list[ComponentCreateSchema]] = Form()
     description: Optional[str]

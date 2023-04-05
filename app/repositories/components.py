@@ -1,11 +1,14 @@
-from sqlalchemy import delete, insert, select
+"""Репозиторий для работы с компонентами."""
+from sqlalchemy import delete, insert
 
-from app.db import async_session
 from app.repositories.base import Repository
 from app.tables.recipes import Component, recipe_component
 
 
-async def insert_component(ingredient_id, amount, recipe_id):
+async def insert_component(
+    ingredient_id: int, amount: int, recipe_id: int
+) -> None:
+    """Создать компонент для рецепта."""
     component_create_query = (
         insert(Component)
         .values(
@@ -20,6 +23,7 @@ async def insert_component(ingredient_id, amount, recipe_id):
     await Repository.insert(recipe_component_query)
 
 
-async def delete_components_by_recipe(recipe_id):
+async def delete_components_by_recipe(recipe_id: int) -> None:
+    """Удалить компоненты рецепта."""
     query = delete(Component).where(Component.recipe_id == recipe_id)
     await Repository.delete(query)

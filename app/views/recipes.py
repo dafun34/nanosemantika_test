@@ -1,3 +1,4 @@
+"""Модуль представлений для работы с рецептами."""
 from typing import List
 
 from fastapi.encoders import jsonable_encoder
@@ -22,27 +23,33 @@ from app.schemas.recipes import (
     RecipeSchema,
     RecipeUpdateSchema,
 )
+from app.schemas.responses import BaseResponseModel
 from app.views.base import BaseView
 
 router = InferringRouter()
 
+PREFIX = "recipes"
+
 
 @cbv(router)
 class Recipes(BaseView):
-    @router.get("/recipes/", response_model=List[RecipeSchema])
+    """Представление для работы с рецептами."""
+
+    @router.get(f"/{PREFIX}/", response_model=List[RecipeSchema])
     async def get_recipes_list(self) -> List[RecipeSchema]:
         """Получить список рецептов."""
         return await get_recipes_list()
 
-    @router.get(f"/recipes/{{recipe_id}}", response_model=RecipeSchema)
-    async def get_recipe(self, recipe_id: int):
+    @router.get(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
+    async def get_recipe(self, recipe_id: int) -> RecipeSchema:
         """Получить рецепт по id."""
         return await get_recipe(recipe_id)
 
-    @router.put(f"/recipes/{{recipe_id}}", response_model=RecipeSchema)
+    @router.put(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
     async def update_recipe(
         self, recipe_id: int, update_data: RecipeUpdateSchema
-    ):
+    ) -> JSONResponse:
+        """Обновить рецепт."""
         if update_data.ingredients:
             await delete_components_by_recipe(recipe_id)
             for ingredient in update_data.ingredients:
@@ -60,11 +67,13 @@ class Recipes(BaseView):
         )
 
     @router.post(
-        "/recipes/",
+        f"/{PREFIX}/",
         response_model=RecipeSchema,
         responses={201: {"model": RecipeSchema}},
     )
-    async def create_recipe(self, recipe_data: RecipeCreateSchema):
+    async def create_recipe(
+        self, recipe_data: RecipeCreateSchema
+    ) -> JSONResponse:
         """Создать рецепт."""
         recipe_id = await create_recipe(recipe_data)
         recipe = await get_recipe(recipe_id)
@@ -76,9 +85,10 @@ class Recipes(BaseView):
             },
         )
 
-    @router.delete(f"/recipes/{{recipe_id}}",
-                   responses={204: {"description": "Рецепт удален"}})
-    async def delete_recipe(self, recipe_id: int):
+    @router.delete(
+        f"/{PREFIX}/{{recipe_id}}", response_model=BaseResponseModel
+    )
+    async def delete_recipe(self, recipe_id: int) -> Response:
         """Удалить рецепт."""
         await delete_recipe(recipe_id)
         return Response(status_code=status.HTTP_204_NO_CONTENT)

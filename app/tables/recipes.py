@@ -1,3 +1,4 @@
+"""Модуль табличек для работы с рецептами."""
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 

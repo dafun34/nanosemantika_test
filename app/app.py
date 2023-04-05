@@ -1,3 +1,4 @@
+"""Модуль инициализации приложения."""
 import uvicorn
 from fastapi import APIRouter, FastAPI
 

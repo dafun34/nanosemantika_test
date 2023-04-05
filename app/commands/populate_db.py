@@ -1,3 +1,4 @@
+"""Команда наполнения БД начальными данными."""
 import asyncio
 
 from app.repositories.base import Repository
@@ -15,7 +16,8 @@ ingredients_lst = [
 ]
 
 
-async def insert_ingredients(ingredients):
+async def insert_ingredients(ingredients: list) -> None:
+    """Создать ингридиенты."""
     await Repository.bulk_insert(ingredients)
 
 
