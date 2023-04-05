@@ -1,9 +1,11 @@
 """Модели связанные с рецептами."""
 from typing import Optional
 
+from fastapi import Form
 from pydantic import BaseModel
 
 from app.tables.recipes import Component
+from app.utils.common import as_form
 
 
 class IngredientSchema(BaseModel):
@@ -62,3 +64,15 @@ class RecipeSchema(BaseModel):
         """Конфиг модели."""
 
         orm_mode = True
+
+
+class ComponentCreateSchema(BaseModel):
+    ingredient_id: int
+    amount: int
+
+
+class RecipeCreateSchema(BaseModel):
+    name: str
+    ingredients: list[ComponentCreateSchema] = Form(...)
+    description: str
+    cooking_time: int

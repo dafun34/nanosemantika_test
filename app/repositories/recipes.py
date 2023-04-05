@@ -1,7 +1,8 @@
-from sqlalchemy import select
+from sqlalchemy import insert, select
 from sqlalchemy.orm import selectinload
 
 from app.repositories.base import Repository
+from app.repositories.components import insert_component
 from app.tables.recipes import Recipes
 
 
@@ -17,3 +18,21 @@ async def get_recipe(recipe_id: int):
         .options(selectinload(Recipes.ingredients))
     )
     return await Repository.scalar(query)
+
+
+async def create_recipe(recipe_data):
+    recipe_create_query = (
+        insert(Recipes)
+        .values(
+            name=recipe_data.name,
+            description=recipe_data.description,
+            cooking_time=recipe_data.cooking_time,
+        )
+        .returning(Recipes.id)
+    )
+    recipe_id = (await Repository.insert(recipe_create_query)).scalar()
+    for ingredient in recipe_data.ingredients:
+        await insert_component(
+            ingredient.ingredient_id, ingredient.amount, recipe_id
+        )
+    return recipe_id
