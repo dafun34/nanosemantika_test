@@ -40,7 +40,14 @@ class Recipes(BaseView):
         """Получить список рецептов."""
         return await get_recipes_list()
 
-    @router.get(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
+    @router.get(
+        f"/{PREFIX}/{{recipe_id}}",
+        response_model=RecipeSchema,
+        responses={
+            200: {"model": RecipeSchema},
+            404: {"model": BaseResponseModel},
+        },
+    )
     async def get_recipe(
         self, recipe_id: int
     ) -> Union[RecipeSchema, JSONResponse]:
@@ -53,7 +60,14 @@ class Recipes(BaseView):
             content={"message": "recipe not found"},
         )
 
-    @router.put(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
+    @router.put(
+        f"/{PREFIX}/{{recipe_id}}",
+        response_model=RecipeSchema,
+        responses={
+            200: {"model": RecipeSchema},
+            404: {"model": BaseResponseModel},
+        },
+    )
     async def update_recipe(
         self, recipe_id: int, update_data: RecipeUpdateSchema
     ) -> JSONResponse:
