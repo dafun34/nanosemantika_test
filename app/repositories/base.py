@@ -28,7 +28,7 @@ class Repository:
         return [result[0] for result in (await cls._execute(query)).all()]
 
     @classmethod
-    async def scalar(cls, query: Query) -> tuple[Any, ...]:
+    async def scalar(cls, query: Query) -> Any:
         """Получить одну запись из базы."""
         return (await cls._execute(query)).scalar()
 

@@ -1,5 +1,5 @@
 """Модуль представлений для работы с рецептами."""
-from typing import List
+from typing import List, Union
 
 from fastapi.encoders import jsonable_encoder
 from fastapi_utils.cbv import cbv
@@ -41,15 +41,29 @@ class Recipes(BaseView):
         return await get_recipes_list()
 
     @router.get(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
-    async def get_recipe(self, recipe_id: int) -> RecipeSchema:
+    async def get_recipe(
+        self, recipe_id: int
+    ) -> Union[RecipeSchema, JSONResponse]:
         """Получить рецепт по id."""
-        return await get_recipe(recipe_id)
+        recipe = await get_recipe(recipe_id)
+        if recipe:
+            return recipe
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={"message": "recipe not found"},
+        )
 
     @router.put(f"/{PREFIX}/{{recipe_id}}", response_model=RecipeSchema)
     async def update_recipe(
         self, recipe_id: int, update_data: RecipeUpdateSchema
     ) -> JSONResponse:
         """Обновить рецепт."""
+        recipe = await get_recipe(recipe_id)
+        if not recipe:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={"message": "recipe not found"},
+            )
         if update_data.ingredients:
             await delete_components_by_recipe(recipe_id)
             for ingredient in update_data.ingredients:

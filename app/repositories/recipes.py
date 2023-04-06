@@ -14,7 +14,7 @@ async def get_recipes_list() -> list:
     return await Repository.all(query)
 
 
-async def get_recipe(recipe_id: int) -> tuple:
+async def get_recipe(recipe_id: int) -> Recipes:
     """Получить рецепт по id."""
     query = (
         select(Recipes)
