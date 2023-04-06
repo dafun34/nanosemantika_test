@@ -5,9 +5,6 @@ Revises: 639dba18421c
 Create Date: 2023-04-06 19:24:56.446824
 
 """
-from app.config import settings
-import asyncpg
-from sqlalchemy.util import await_only
 # revision identifiers, used by Alembic.
 from alembic import op
 
