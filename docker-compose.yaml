@@ -8,14 +8,14 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
 
   app:
     build: .
     volumes:
       - .:/app
     ports:
-      - "9191:9191"
+      - "${APP_PORT}:${APP_PORT}"
     env_file:
       - .env
     depends_on:
